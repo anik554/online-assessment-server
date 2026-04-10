@@ -6,7 +6,6 @@ const examSchema = new Schema<IExam>(
     title: { type: String, required: true },
     totalCandidates: { type: Number, required: true },
     totalSlots: { type: Number, required: true },
-    questionSets: [{ type: Schema.Types.ObjectId, ref: "Question" }],
     questionType: {
       type: String,
       enum: ["MCQ", "TEXT"],
@@ -16,7 +15,7 @@ const examSchema = new Schema<IExam>(
     endTime: { type: Date, required: true },
     duration: { type: Number, required: true },
     createdBy: {
-      type: "String",
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },

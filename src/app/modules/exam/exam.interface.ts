@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface IExam {
   title: string;
   totalCandidates: number;
@@ -7,5 +9,5 @@ export interface IExam {
   startTime: Date;
   endTime: Date;
   duration: number;
-  createdBy: string;
+  createdBy: Types.ObjectId;
 }

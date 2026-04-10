@@ -9,10 +9,14 @@ import { getRedirectUrlByRole } from "../../utils/getRedirectUrlByRole";
 
 const loginUser = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
-  const isExisting = await User.findOne({ email });
+  const isExisting = await User.findOne({
+    email: email?.toLowerCase(),
+  });
+
+  console.log("payload",payload)
 
   if (!isExisting) {
-    throw new AppError(httpStatus.NOT_FOUND, "User Doesn't Exist");
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
   }
 
   const isPasswordMatched = await bcrypt.compare(
@@ -21,7 +25,7 @@ const loginUser = async (payload: Partial<IUser>) => {
   );
 
   if (!isPasswordMatched) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Incorrect Password");
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
   }
 
   const jwtPayload = {
