@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export type QuestionType = "CHECKBOX" | "RADIO" | "TEXT";
 
 export interface IOption {
@@ -6,7 +8,7 @@ export interface IOption {
 }
 
 export interface IQuestion {
-  examId: string;
+  examId: Types.ObjectId;
   title: string;
   type: QuestionType;
   options?: IOption[];

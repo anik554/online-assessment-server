@@ -6,7 +6,7 @@ const optionSchema = new Schema(
     text: String,
     isCorrect: Boolean,
   },
-  { _id: false },
+  { _id: false, versionKey: false },
 );
 
 const questionSchema = new Schema<IQuestion>(
@@ -24,7 +24,7 @@ const questionSchema = new Schema<IQuestion>(
     },
     options: [optionSchema],
   },
-  { timestamps: true },
+  { timestamps: true, versionKey: false },
 );
 
 export const Question = model<IQuestion>("Question", questionSchema);
