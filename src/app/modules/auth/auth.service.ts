@@ -3,7 +3,7 @@ import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import httpStatus from "http-status-codes";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import { getRedirectUrlByRole } from "../../utils/getRedirectUrlByRole";
 
@@ -12,8 +12,6 @@ const loginUser = async (payload: Partial<IUser>) => {
   const isExisting = await User.findOne({
     email: email?.toLowerCase(),
   });
-
-  console.log("payload",payload)
 
   if (!isExisting) {
     throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
@@ -34,9 +32,11 @@ const loginUser = async (payload: Partial<IUser>) => {
     role: isExisting.role,
   };
 
-  const accessToken = jwt.sign(jwtPayload, envVars.JWT_ACCESS_SECRET!, {
-    expiresIn: envVars.JWT_ACCESS_EXPIRES,
-  });
+  const accessToken = jwt.sign(
+    jwtPayload,
+    envVars.JWT_ACCESS_SECRET as Secret,
+    { expiresIn: envVars.JWT_ACCESS_EXPIRES } as SignOptions,
+  );
 
   const redirectUrl = getRedirectUrlByRole(isExisting.role);
 

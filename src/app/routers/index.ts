@@ -3,6 +3,7 @@ import { UserRoutes } from "../modules/user/user.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 import { ExamRoutes } from "../modules/exam/exam.route";
 import { QuestionRoutes } from "../modules/question/question.route";
+import { SubmissionRoutes } from "../modules/submission/submission.route";
 
 export const router = Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: "/questions",
     route: QuestionRoutes,
+  },
+  {
+    path: "/submissions",
+    route: SubmissionRoutes,
   },
 ];
 

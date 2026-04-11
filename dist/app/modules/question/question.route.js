@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QuestionRoutes = void 0;
+const express_1 = require("express");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const question_validation_1 = require("./question.validation");
+const user_interface_1 = require("../user/user.interface");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const question_controller_1 = require("./question.controller");
+const router = (0, express_1.Router)();
+router.post("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), (0, validateRequest_1.validateRequest)(question_validation_1.createQuestionSchema), question_controller_1.QuestionControllers.createQuestion);
+router.get("/exam/:examId", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER, user_interface_1.Role.CANDIDATE), question_controller_1.QuestionControllers.getQuestionsByExam);
+router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), question_controller_1.QuestionControllers.getSingleQuestion);
+router.patch("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), (0, validateRequest_1.validateRequest)(question_validation_1.updateQuestionSchema), question_controller_1.QuestionControllers.updateQuestion);
+router.delete("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), question_controller_1.QuestionControllers.deleteQuestion);
+exports.QuestionRoutes = router;

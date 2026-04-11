@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface IAnswer {
   questionId: string;
   selectedOptions?: string[]; // for MCQ
@@ -5,8 +7,8 @@ export interface IAnswer {
 }
 
 export interface ISubmission {
-  candidateId: string;
-  examId: string;
+  candidateId: Types.ObjectId;
+  examId: Types.ObjectId;
   answers: IAnswer[];
   score?: number;
 }
