@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SubmissionRoutes = void 0;
+const express_1 = require("express");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const submission_validation_1 = require("./submission.validation");
+const user_interface_1 = require("../user/user.interface");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const submission_controller_1 = require("./submission.controller");
+const router = (0, express_1.Router)();
+router.post("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.CANDIDATE), (0, validateRequest_1.validateRequest)(submission_validation_1.createSubmissionSchema), submission_controller_1.SubmissionControllers.createSubmission);
+router.get("/my", (0, checkAuth_1.checkAuth)(user_interface_1.Role.CANDIDATE), submission_controller_1.SubmissionControllers.getMySubmissions);
+router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.CANDIDATE, user_interface_1.Role.EMPLOYER), submission_controller_1.SubmissionControllers.getSingleSubmission);
+router.get("/exam/:examId", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), submission_controller_1.SubmissionControllers.getSubmissionsByExam);
+router.patch("/:id/score", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), (0, validateRequest_1.validateRequest)(submission_validation_1.updateSubmissionSchema), submission_controller_1.SubmissionControllers.updateSubmissionScore);
+router.delete("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), submission_controller_1.SubmissionControllers.deleteSubmission);
+exports.SubmissionRoutes = router;

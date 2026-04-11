@@ -1,6 +1,8 @@
+import { Types } from "mongoose";
+
 export interface ICandidateExam {
-  candidateId: string;
-  examId: string;
+  candidateId: Types.ObjectId;
+  examId: Types.ObjectId;
   status: "PENDING" | "STARTED" | "COMPLETED";
   startedAt?: Date;
   submittedAt?: Date;

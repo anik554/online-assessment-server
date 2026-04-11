@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ExamRoutes = void 0;
+const express_1 = require("express");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const exam_validation_1 = require("./exam.validation");
+const user_interface_1 = require("../user/user.interface");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const exam_controller_1 = require("./exam.controller");
+const router = (0, express_1.Router)();
+router.post("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), (0, validateRequest_1.validateRequest)(exam_validation_1.createExamSchema), exam_controller_1.ExamControllers.createExam);
+router.get("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.CANDIDATE, user_interface_1.Role.EMPLOYER), exam_controller_1.ExamControllers.getAllExams);
+router.get("/my", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), exam_controller_1.ExamControllers.getMyExams);
+router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), exam_controller_1.ExamControllers.getSingleExam);
+router.patch("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), (0, validateRequest_1.validateRequest)(exam_validation_1.updateExamSchema), exam_controller_1.ExamControllers.updateExam);
+router.delete("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.EMPLOYER), exam_controller_1.ExamControllers.deleteExam);
+exports.ExamRoutes = router;

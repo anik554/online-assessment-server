@@ -18,20 +18,24 @@ const createExam = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllExams = catchAsync(async (req: Request, res: Response) => {
-  const result = await ExamServices.getAllExams();
+  const result = await ExamServices.getAllExams(req.query);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Exams retrieved successfully",
-    data: result,
+    data: result.data,
+    meta: {
+      ...result.meta,
+      totalPage: result.meta.totalPages,
+    },
   });
 });
 
 const getMyExams = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user.userId;
-
-  const result = await ExamServices.getMyExams(userId, undefined);
+  const searchTream = req.query as Record<string, string | null>;
+  const result = await ExamServices.getMyExams(userId, searchTream);
 
   sendResponse(res, {
     success: true,

@@ -16,7 +16,7 @@ router.post(
 
 router.get(
   "/exam/:examId",
-  checkAuth(Role.EMPLOYER),
+  checkAuth(Role.EMPLOYER, Role.CANDIDATE),
   QuestionControllers.getQuestionsByExam
 );
 

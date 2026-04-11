@@ -14,7 +14,7 @@ router.post(
   ExamControllers.createExam,
 );
 
-router.get("/", checkAuth(Role.EMPLOYER), ExamControllers.getAllExams);
+router.get("/", checkAuth(Role.CANDIDATE,Role.EMPLOYER), ExamControllers.getAllExams);
 
 router.get("/my", checkAuth(Role.EMPLOYER), ExamControllers.getMyExams);
 

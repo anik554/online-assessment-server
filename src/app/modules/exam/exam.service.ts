@@ -13,11 +13,42 @@ const createExam = async (userId: string, payload: JwtPayload) => {
   return exam;
 };
 
-const getAllExams = async () => {
-  return Exam.find().sort({ createdAt: -1 });
+const getAllExams = async (query: Record<string, any>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 8;
+  const search = query.search || "";
+
+  const skip = (page - 1) * limit;
+
+  // 🔍 Search filter
+  const filter = search
+    ? {
+        title: { $regex: search, $options: "i" },
+      }
+    : {};
+
+  const [data, total] = await Promise.all([
+    Exam.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit),
+
+    Exam.countDocuments(filter),
+  ]);
+
+  return {
+    data,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
-const getMyExams = async (userId: string, query: Record<string, any>) => {
+
+const getMyExams = async (userId: string, query: Record<string, string | null>) => {
   const filter: any = {
     createdBy: new Types.ObjectId(userId),
   };
