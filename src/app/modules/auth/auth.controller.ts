@@ -8,9 +8,11 @@ const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await AuthServices.loginUser(req.body);
     res.cookie("accessToken", user.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      httpOnly: true, // ✅ MUST
+      secure: true, // ✅ REQUIRED on HTTPS (Vercel)
+      sameSite: "none", // ✅ VERY IMPORTANT
+      path: "/", // ✅ make available everywhere
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     sendResponse(res, {
@@ -27,7 +29,8 @@ const logoutUser = catchAsync(
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
+      path: "/",
     });
 
     sendResponse(res, {

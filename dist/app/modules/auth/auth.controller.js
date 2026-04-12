@@ -20,9 +20,11 @@ const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const loginUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield auth_service_1.AuthServices.loginUser(req.body);
     res.cookie("accessToken", user.accessToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        httpOnly: true, // ✅ MUST
+        secure: true, // ✅ REQUIRED on HTTPS (Vercel)
+        sameSite: "none", // ✅ VERY IMPORTANT
+        path: "/", // ✅ make available everywhere
+        maxAge: 24 * 60 * 60 * 1000,
     });
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
@@ -35,7 +37,8 @@ const logoutUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
     res.clearCookie("accessToken", {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
+        sameSite: "none",
+        path: "/",
     });
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
