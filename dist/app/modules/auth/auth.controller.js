@@ -20,10 +20,9 @@ const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const loginUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield auth_service_1.AuthServices.loginUser(req.body);
     res.cookie("accessToken", user.accessToken, {
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
-        sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000
+        sameSite: "none",
     });
     (0, sendResponse_1.sendResponse)(res, {
         success: true,

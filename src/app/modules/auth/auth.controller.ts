@@ -8,10 +8,9 @@ const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await AuthServices.loginUser(req.body);
     res.cookie("accessToken", user.accessToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000
+      sameSite: "none",
     });
 
     sendResponse(res, {
